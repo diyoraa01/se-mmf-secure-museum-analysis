@@ -17,21 +17,12 @@ jobs:
   run_tests:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-#     container: circleci/mongo:latest
-#     container: cimg/node:current-browsers
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#       steps:
-      #install chrome
-#       - run: sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
-#       - run: sudo echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-#       - run: sudo apt-get -y update
-  
       
       - run: sudo apt-get -y install google-chrome-stable
-      - run: whereis google-chrome
+#       - run: whereis google-chrome
       - run: wget https://chromedriver.storage.googleapis.com/100.0.4896.60/chromedriver_linux64.zip
       - run: unzip chromedriver_linux64.zip
       - run: sudo mv chromedriver /usr/bin/chromedriver
@@ -40,14 +31,10 @@ jobs:
       - run: sudo apt-get install xvfb
 #       - run: chrome --version
       - uses: actions/checkout@v3
-      - run: ls
       #checkout web-mpc
       - run: git submodule init 
       - run: git submodule update
       #checkout jiff
-      - run: ls
-      - run: cd web-mpc
-      - run: ls
       - run: git submodule init 
         working-directory: web-mpc
       - run: git submodule update
@@ -61,13 +48,10 @@ jobs:
           restore-keys: v1-npm-de
       
       #install deps
-      - run: ls
       - run: npm ci
         working-directory: web-mpc
-#       - run: cd jiff
       - run: npm ci
         working-directory: web-mpc/jiff
-      - run: cd ..
       #cache deps
       #not implemented
       
@@ -78,6 +62,3 @@ jobs:
 #       - run: node test/selenium/small_test.js
       - run: npm run test
         working-directory: web-mpc
-      
-      #done
-      - run: echo Done
