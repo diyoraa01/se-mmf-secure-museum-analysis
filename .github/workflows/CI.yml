@@ -49,7 +49,9 @@ jobs:
       - run: cd web-mpc
       - run: ls
       - run: git submodule init 
+        working-directory: web-mpc
       - run: git submodule update
+        working-directory: web-mpc
       #restore deps
       - name: Cache node modules
         uses: actions/cache@v2
@@ -61,8 +63,10 @@ jobs:
       #install deps
       - run: ls
       - run: npm ci
+        working-directory: web-mpc
       - run: cd jiff
       - run: npm ci
+        working-directory: web-mpc/jiff
       - run: cd ..
       #cache deps
       #not implemented
