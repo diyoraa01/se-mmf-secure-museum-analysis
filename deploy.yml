@@ -1,0 +1,19 @@
+common:
+  labels:
+    gitsha: ${{GITHUB_SHA}}
+
+deploys:
+  - name: se-mmf-deploy
+    region: us-central1
+    instance_group: se-mmf-ssl-instance-group
+    instance_template_base: se-mmf-instance-template-2
+    instance_template: my-app-${{GITHUB_RUN_NUMBER}}-${{GITHUB_SHA}}
+    #cloud_init: cloud-init.yml # see example dir
+    labels: # will also have gitsha from common section
+      version: ${{APP_VERSION}}
+    tags:
+      - my-tag123
+    update_policy:
+      min_ready_sec: 30
+
+delete_instance_templates_after: false
