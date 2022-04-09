@@ -56,9 +56,6 @@ jobs:
       #not implemented
       
       #run tests
-#       - run: npm install --save selenium-webdriver chromedriver
-#       - run: ls
       - run: Xvfb :1 -screen 0 1024x768x24 & export DISPLAY=:1
-#       - run: node test/selenium/small_test.js
       - run: npm run test
         working-directory: web-mpc
