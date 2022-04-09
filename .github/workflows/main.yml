@@ -4,12 +4,9 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  push: 
-    branches: [dev]
   # Triggers the workflow on push or pull request events but only for the main branch
-#   pull_request:
-#     branches: [ dev ]
-    
+  push:
+    branches: [ dev ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,12 +14,61 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  if_merged:
-#     if: github.event.pull_request.merged == true
+  run_tests:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+#     container: circleci/mongo:latest
+#     container: cimg/node:current-browsers
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Google Cloud Compute Engine Deploy
-        uses: mattes/gce-deploy-action@v5.0.0
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+#       steps:
+      #install chrome
+#       - run: sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
+#       - run: sudo echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+#       - run: sudo apt-get -y update
+  
+      - run: sudo apt-get -y install google-chrome-stable
+      - run: whereis google-chrome
+      - run: wget https://chromedriver.storage.googleapis.com/100.0.4896.60/chromedriver_linux64.zip
+      - run: unzip chromedriver_linux64.zip
+      - run: sudo mv chromedriver /usr/bin/chromedriver
+      - run: sudo chown root:root /usr/bin/chromedriver
+      - run: sudo chmod +x /usr/bin/chromedriver
+      - run: sudo apt-get install xvfb
+#       - run: chrome --version
+      - uses: actions/checkout@v3
+#       #checkout web-mpc
+#       - run: git submodule init 
+#       - run: git submodule update
+      #checkout jiff
+      #- run: cd web-mpc
+      - run: git submodule init 
+      - run: git submodule update
+      #restore deps
+      - name: Cache node modules
+        uses: actions/cache@v2
         with:
-          creds: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      - run: echo "Deployed to Google Cloud Compute Engine"
+          path: ~/.npm
+          key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: v1-npm-de
+      
+      #install deps
+      - run: npm install
+      - run: cd jiff
+      - run: npm install
+      - run: cd ..
+      #cache deps
+      #not implemented
+      
+      #run tests
+#       - run: npm install --save selenium-webdriver chromedriver
+#       - run: ls
+      - run: Xvfb :1 -screen 0 1024x768x24 & export DISPLAY=:1
+#       - run: node test/selenium/small_test.js
+      - run: npm run test
+      
+      #done
+      - run: echo Done
+
