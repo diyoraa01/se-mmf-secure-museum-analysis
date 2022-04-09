@@ -45,6 +45,7 @@ jobs:
       - run: git submodule init 
       - run: git submodule update
       #checkout jiff
+      - run: ls
       - run: cd web-mpc
       - run: ls
       - run: git submodule init 
