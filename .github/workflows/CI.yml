@@ -60,9 +60,9 @@ jobs:
       
       #install deps
       - run: ls
-      - run: npm install
+      - run: npm ci
       - run: cd jiff
-      - run: npm install
+      - run: npm ci
       - run: cd ..
       #cache deps
       #not implemented
