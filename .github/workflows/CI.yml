@@ -29,7 +29,7 @@ jobs:
 #       - run: sudo echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
 #       - run: sudo apt-get -y update
   
-      - run: ls
+      
       - run: sudo apt-get -y install google-chrome-stable
       - run: whereis google-chrome
       - run: wget https://chromedriver.storage.googleapis.com/100.0.4896.60/chromedriver_linux64.zip
@@ -40,6 +40,7 @@ jobs:
       - run: sudo apt-get install xvfb
 #       - run: chrome --version
       - uses: actions/checkout@v3
+      - run: ls
       #checkout web-mpc
       - run: git submodule init 
       - run: git submodule update
