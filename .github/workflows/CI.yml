@@ -46,6 +46,7 @@ jobs:
       - run: git submodule update
       #checkout jiff
       - run: cd web-mpc
+      - run: ls
       - run: git submodule init 
       - run: git submodule update
       #restore deps
