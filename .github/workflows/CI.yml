@@ -57,6 +57,7 @@ jobs:
           restore-keys: v1-npm-de
       
       #install deps
+      - run: ls
       - run: npm install
       - run: cd jiff
       - run: npm install
