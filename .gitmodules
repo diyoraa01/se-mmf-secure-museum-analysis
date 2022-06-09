@@ -1,0 +1,4 @@
+[submodule "web-mpc"]
+	path = web-mpc
+	url = https://github.com/BU-Spark/web-mpc
+	branch = dev

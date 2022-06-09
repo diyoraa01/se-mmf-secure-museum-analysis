@@ -17,20 +17,12 @@ jobs:
   run_tests:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-#     container: circleci/mongo:latest
-#     container: cimg/node:current-browsers
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#       steps:
-      #install chrome
-#       - run: sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
-#       - run: sudo echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-#       - run: sudo apt-get -y update
-  
+      
       - run: sudo apt-get -y install google-chrome-stable
-      - run: whereis google-chrome
+#       - run: whereis google-chrome
       - run: wget https://chromedriver.storage.googleapis.com/100.0.4896.60/chromedriver_linux64.zip
       - run: unzip chromedriver_linux64.zip
       - run: sudo mv chromedriver /usr/bin/chromedriver
@@ -43,9 +35,10 @@ jobs:
       - run: git submodule init 
       - run: git submodule update
       #checkout jiff
-      - run: cd web-mpc
       - run: git submodule init 
+        working-directory: web-mpc
       - run: git submodule update
+        working-directory: web-mpc
       #restore deps
       - name: Cache node modules
         uses: actions/cache@v2
@@ -55,19 +48,14 @@ jobs:
           restore-keys: v1-npm-de
       
       #install deps
-      - run: npm install
-      - run: cd jiff
-      - run: npm install
-      - run: cd ..
+      - run: npm ci
+        working-directory: web-mpc
+      - run: npm ci
+        working-directory: web-mpc/jiff
       #cache deps
       #not implemented
       
       #run tests
-#       - run: npm install --save selenium-webdriver chromedriver
-#       - run: ls
       - run: Xvfb :1 -screen 0 1024x768x24 & export DISPLAY=:1
-#       - run: node test/selenium/small_test.js
       - run: npm run test
-      
-      #done
-      - run: echo Done
+        working-directory: web-mpc
